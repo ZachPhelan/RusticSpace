@@ -1,32 +1,38 @@
+use std::time::Duration;
+use std::thread;
+
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Button};
-use pango;
+use gtk::{Application, ApplicationWindow, Button, Switch, Box, Orientation};
+use gtk::Orientation::*;
+use glib;
+use glib::{MainContext, PRIORITY_DEFAULT, clone};
 
 fn main() {
     let app = Application::builder()
-        .application_id("org.exmaple.RusticSpace")
+        .application_id("com.github.ZachPhelan.RusticSpace")
         .build();
 
-    app.connect_activate(|app| {
-        let win = ApplicationWindow::builder()
-            .application(app)
-            .default_width(50)
-            .default_height(400)
-            .title("Rustic Space")
-            .build();
-
-        let button = Button::with_label("Click");
-        button.connect_clicked(|_| {
-            eprintln!("Clicked!");
-        });
-
-        win.add(&button);
-        win.show_all();
-    });
+    app.connect_activate(build_ui);
     
     app.run();
 }
 
-fn configure_app(app: &gtk::Application) {
+fn build_ui(app: &gtk::Application) {
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("Rustic Space")
+        .build();
+
+    let button = Button::builder()
+        .label("test")
+        .margin_top(12)
+        .margin_bottom(12)
+        .margin_start(12)
+        .margin_end(12)
+        .build();
+
+    window.set_child(Some(&button));
+
+    window.present();
     
 }
